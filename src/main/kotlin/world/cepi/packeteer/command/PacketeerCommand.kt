@@ -25,16 +25,18 @@ object PacketeerCommand : Kommand(k@ {
         val emptyConstructor = clazz.constructors.firstOrNull { it.parameterCount == 0 } as? Constructor<out ServerPacket> ?: return@filter true
 
         val arguments = clazz.declaredFields.associateBy { field ->
-            return@associateBy when (field.type) {
-                Int::class.java -> ArgumentType.Integer(field.name)
-                Float::class.java -> ArgumentType.Float(field.name)
-                Long::class.java -> ArgumentType.Long(field.name)
-                Double::class.java -> ArgumentType.Double(field.name)
-                UUID::class.java -> ArgumentType.UUID(field.name)
-                Boolean::class.java -> ArgumentType.Boolean(field.name)
-                Short::class.java -> ArgumentType.Integer(field.name)
-                String::class.java -> ArgumentType.String(field.name)
-                Component::class.java -> ArgumentType.Component(field.name)
+
+            return@associateBy when {
+                field.type == Int::class.java -> ArgumentType.Integer(field.name)
+                field.type == Float::class.java -> ArgumentType.Float(field.name)
+                field.type == Long::class.java -> ArgumentType.Long(field.name)
+                field.type == Double::class.java -> ArgumentType.Double(field.name)
+                field.type == UUID::class.java -> ArgumentType.UUID(field.name)
+                field.type == Boolean::class.java -> ArgumentType.Boolean(field.name)
+                field.type == Short::class.java -> ArgumentType.Integer(field.name)
+                field.type == String::class.java -> ArgumentType.String(field.name)
+                field.type == Component::class.java -> ArgumentType.Component(field.name)
+                field.type.enumConstants != null -> ArgumentType.Enum(field.name, field.type as Class<Enum<*>>)
                 else -> return@filter true // This failed, send it as a failed packet
 
             }
@@ -58,6 +60,7 @@ object PacketeerCommand : Kommand(k@ {
                     Short::class.java -> field.setShort(field.name, (value as Int).toShort())
                     String::class.java -> field.set(field.name, value)
                     Component::class.java -> field.set(field.name, value)
+                    Enum::class.java -> field.set(field.name, value)
                 }
             }
 
