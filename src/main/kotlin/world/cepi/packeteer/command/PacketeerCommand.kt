@@ -2,9 +2,12 @@ package world.cepi.packeteer.command
 
 import net.kyori.adventure.text.Component
 import net.minestom.server.command.builder.arguments.ArgumentType
+import net.minestom.server.coordinate.Point
+import net.minestom.server.coordinate.Vec
 import net.minestom.server.entity.Player
 import net.minestom.server.network.packet.server.ServerPacket
 import net.minestom.server.utils.PacketUtils
+import net.minestom.server.utils.location.RelativeVec
 import org.slf4j.LoggerFactory
 import world.cepi.kstom.command.arguments.literal
 import world.cepi.kstom.command.kommand.Kommand
@@ -36,6 +39,8 @@ object PacketeerCommand : Kommand(k@ {
                 field.type == Short::class.java -> ArgumentType.Integer(field.name)
                 field.type == String::class.java -> ArgumentType.String(field.name)
                 field.type == Component::class.java -> ArgumentType.Component(field.name)
+                field.type == Point::class.java -> ArgumentType.RelativeVec3(field.name)
+                field.type == Vec::class.java -> ArgumentType.RelativeVec3(field.name)
                 field.type.enumConstants != null -> ArgumentType.Enum(field.name, field.type as Class<Enum<*>>)
                 else -> return@filter true // This failed, send it as a failed packet
 
@@ -48,18 +53,20 @@ object PacketeerCommand : Kommand(k@ {
             arguments.forEach {
 
                 val field = it.value
-                val value = field.type.cast(!it.key)
+                val value = !it.key
 
                 when(field.type) {
                     Int::class.java -> field.setInt(instance, value as Int)
                     Float::class.java -> field.setFloat(field.name, value as Float)
                     Long::class.java -> field.setLong(field.name, value as Long)
                     Double::class.java -> field.setDouble(field.name, value as Double)
-                    UUID::class.java -> field.set(field.name, value)
                     Boolean::class.java -> field.setBoolean(field.name, value as Boolean)
-                    Short::class.java -> field.setShort(field.name, (value as Int).toShort())
+                    Short::class.java -> field.setShort(field.name, value as Short)
+                    UUID::class.java -> field.set(field.name, value)
                     String::class.java -> field.set(field.name, value)
                     Component::class.java -> field.set(field.name, value)
+                    Point::class.java -> field.set(field.name, (value as RelativeVec).fromSender(sender))
+                    Vec::class.java -> field.set(field.name, (value as RelativeVec).fromSender(sender))
                     Enum::class.java -> field.set(field.name, value)
                 }
             }
