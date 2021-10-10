@@ -1,13 +1,13 @@
-# ExampleExtension
-[![license](https://img.shields.io/github/license/Project-Cepi/ExampleExtension?style=for-the-badge&color=b2204c)](../LICENSE)
+# Packeteer
+[![license](https://img.shields.io/github/license/Project-Cepi/Packeteer?style=for-the-badge&color=b2204c)](../LICENSE)
 [![wiki](https://img.shields.io/badge/documentation-wiki-74aad6?style=for-the-badge)](https://project-cepi.github.io/)
 [![discord-banner](https://img.shields.io/discord/706185253441634317?label=discord&style=for-the-badge&color=7289da)](https://discord.cepi.world/8K8WMGV)
 
-An example extension for Minestom based off of Sabre/kotlin libs.
+Packet listening and sending utilities for debugging
 
 ## Installation
 
-Download the jar from [Releases](https://github.com/Project-Cepi/ExampleExtension/releases)
+Download the jar from [Releases](https://github.com/Project-Cepi/Packeteer/releases)
 OR compile it yourself. Instructions to do so are in Compile header
 
 Drop it into the `/extensions` folder.
@@ -17,7 +17,7 @@ Drop it into the `/extensions` folder.
 Create a folder, then
 Clone the repository using:
 
-`git clone https://github.com/Project-Cepi/ExampleExtension.git`
+`git clone https://github.com/Project-Cepi/Packeteer.git`
 
 Once it is cloned, make sure you have gradle installed, and run
 
