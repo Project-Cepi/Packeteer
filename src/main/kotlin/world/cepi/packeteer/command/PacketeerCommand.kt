@@ -1,5 +1,6 @@
 package world.cepi.packeteer.command
 
+import net.kyori.adventure.text.Component
 import net.minestom.server.command.builder.arguments.ArgumentType
 import net.minestom.server.entity.Player
 import net.minestom.server.network.packet.server.ServerPacket
@@ -33,6 +34,7 @@ object PacketeerCommand : Kommand(k@ {
                 Boolean::class.java -> ArgumentType.Boolean(field.name)
                 Short::class.java -> ArgumentType.Integer(field.name)
                 String::class.java -> ArgumentType.String(field.name)
+                Component::class.java -> ArgumentType.Component(field.name)
                 else -> return@filter true // This failed, send it as a failed packet
 
             }
@@ -55,6 +57,7 @@ object PacketeerCommand : Kommand(k@ {
                     Boolean::class.java -> field.setBoolean(field.name, value as Boolean)
                     Short::class.java -> field.setShort(field.name, (value as Int).toShort())
                     String::class.java -> field.set(field.name, value)
+                    Component::class.java -> field.set(field.name, value)
                 }
             }
 
