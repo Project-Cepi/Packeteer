@@ -93,7 +93,6 @@ object ServerPackets {
         EntityVelocityPacket::class,
         EntityEquipmentPacket::class,
         SetExperiencePacket::class,
-        UpdateHealthPacket::class,
         ScoreboardObjectivePacket::class,
         SetExperiencePacket::class,
         UpdateHealthPacket::class,
@@ -118,6 +117,6 @@ object ServerPackets {
         EntityEffectPacket::class,
         DeclareRecipesPacket::class,
         TagsPacket::class
-    ).map { it.java }
+    ).distinct().map { it.java }
 
 }
