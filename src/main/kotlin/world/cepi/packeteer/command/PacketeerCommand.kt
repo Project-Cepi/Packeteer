@@ -57,17 +57,17 @@ object PacketeerCommand : Kommand(k@ {
 
                 when(field.type) {
                     Int::class.java -> field.setInt(instance, value as Int)
-                    Float::class.java -> field.setFloat(field.name, value as Float)
-                    Long::class.java -> field.setLong(field.name, value as Long)
-                    Double::class.java -> field.setDouble(field.name, value as Double)
-                    Boolean::class.java -> field.setBoolean(field.name, value as Boolean)
-                    Short::class.java -> field.setShort(field.name, value as Short)
-                    UUID::class.java -> field.set(field.name, value)
-                    String::class.java -> field.set(field.name, value)
-                    Component::class.java -> field.set(field.name, value)
-                    Point::class.java -> field.set(field.name, (value as RelativeVec).fromSender(sender))
-                    Vec::class.java -> field.set(field.name, (value as RelativeVec).fromSender(sender))
-                    Enum::class.java -> field.set(field.name, value)
+                    Float::class.java -> field.setFloat(instance, value as Float)
+                    Long::class.java -> field.setLong(instance, value as Long)
+                    Double::class.java -> field.setDouble(instance, value as Double)
+                    Boolean::class.java -> field.setBoolean(instance, value as Boolean)
+                    Short::class.java -> field.setShort(instance, value as Short)
+                    UUID::class.java -> field.set(instance, value)
+                    String::class.java -> field.set(instance, value)
+                    Component::class.java -> field.set(instance, value)
+                    Point::class.java -> field.set(instance, (value as RelativeVec).fromSender(sender))
+                    Vec::class.java -> field.set(instance, (value as RelativeVec).fromSender(sender))
+                    Enum::class.java -> field.set(instance, value)
                 }
             }
 
