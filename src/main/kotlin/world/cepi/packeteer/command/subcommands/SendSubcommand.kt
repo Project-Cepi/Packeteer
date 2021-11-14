@@ -3,12 +3,14 @@ package world.cepi.packeteer.command.subcommands
 import net.kyori.adventure.text.Component
 import net.minestom.server.command.builder.arguments.ArgumentType
 import net.minestom.server.coordinate.Point
+import net.minestom.server.coordinate.Pos
 import net.minestom.server.coordinate.Vec
 import net.minestom.server.entity.Player
 import net.minestom.server.network.packet.server.ServerPacket
 import net.minestom.server.utils.PacketUtils
 import net.minestom.server.utils.location.RelativeVec
 import org.slf4j.LoggerFactory
+import world.cepi.kstom.command.arguments.MiniMessageArgument
 import world.cepi.kstom.command.arguments.literal
 import world.cepi.kstom.command.kommand.Kommand
 import world.cepi.packeteer.command.PacketeerCommand
@@ -31,6 +33,8 @@ object SendSubcommand : Kommand(k@ {
         val arguments = clazz.declaredFields.associateBy { field ->
 
             return@associateBy when {
+                field.type == Byte::class.java -> ArgumentType.Integer(field.name).map { it.toByte() }
+
                 field.type == Int::class.java -> ArgumentType.Integer(field.name)
                 field.type == Float::class.java -> ArgumentType.Float(field.name)
                 field.type == Long::class.java -> ArgumentType.Long(field.name)
@@ -39,9 +43,10 @@ object SendSubcommand : Kommand(k@ {
                 field.type == Boolean::class.java -> ArgumentType.Boolean(field.name)
                 field.type == Short::class.java -> ArgumentType.Integer(field.name)
                 field.type == String::class.java -> ArgumentType.String(field.name)
-                field.type == Component::class.java -> ArgumentType.Component(field.name)
+                field.type == Component::class.java -> MiniMessageArgument.single(field.name)
                 field.type == Point::class.java -> ArgumentType.RelativeVec3(field.name)
                 field.type == Vec::class.java -> ArgumentType.RelativeVec3(field.name)
+                field.type == Pos::class.java -> ArgumentType.RelativeVec3(field.name)
                 field.type.enumConstants != null -> ArgumentType.Enum(field.name, field.type as Class<Enum<*>>)
                 else -> return@filter true // This failed, send it as a failed packet
 
@@ -57,6 +62,7 @@ object SendSubcommand : Kommand(k@ {
                 val value = !it.key
 
                 when(field.type) {
+                    Byte::class.java -> field.setByte(instance, value as Byte)
                     Int::class.java -> field.setInt(instance, value as Int)
                     Float::class.java -> field.setFloat(instance, value as Float)
                     Long::class.java -> field.setLong(instance, value as Long)
