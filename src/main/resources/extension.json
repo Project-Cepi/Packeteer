@@ -4,5 +4,8 @@
   "version": "${project.version}",
   "dependencies": [
     "KStom"
-  ]
+  ],
+  "meta": {
+    "downloadURL": "https://github.com/Project-Cepi/Packeteer/releases/download/latest/Packeteer-1.0.0-all.jar"
+  }
 }
